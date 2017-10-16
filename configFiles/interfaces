@@ -14,10 +14,10 @@ iface eth0 inet dhcp
 
 allow-hotplug wlan0
 iface wlan0 inet static
-	address 192.168.0.1
+	address 172.91.0.1
 	netmask 255.255.255.0
-	network 192.168.0.0
-	broadcast 192.168.0.255
+	network 172.91.0.0
+	broadcast 172.91.0.255
 
 #    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
 
