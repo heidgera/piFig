@@ -1,0 +1,9 @@
+[Unit]
+Description=Autolaunch electron application
+
+[Service]
+ExecStart=+/usr/bin/startx /home/pi/${APP_NAME}/node_modules/.bin/electron /home/pi/${APP_NAME}
+Restart=on-abnormal
+
+[Install]
+WantedBy=multi-user.target

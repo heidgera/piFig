@@ -6,17 +6,14 @@ obtain(['./src/utils.js', 'child_process'], ({ copyConfigFile, call: Call }, { e
   console.log(startup);
 
   exports.remove = ()=> {
-    var command = 'sed -i".bak" "/node_modules\\/\\.bin\\/electron/d" /home/pi/.bashrc';
-    console.log(command);
-    if (__dirname.indexOf('/home/pi') >= 0) execSync(command);
+    if (__dirname.indexOf('/home/pi') >= 0) execSync('sudo systemctl disable electron.service');
     else console.error('System not a pi, preventing uninstall');
   };
 
   exports.configure = ()=> {
     exports.remove();
-    var command = 'echo "' + startup + '" >> /home/pi/.bashrc';
-    console.log(command);
-    if (__dirname.indexOf('/home/pi') >= 0) execSync(command);
+    copyConfigFile('./configFiles/autostart', '/etc/systemd/system/electron.service', { APP_NAME: mainDir });
+    if (__dirname.indexOf('/home/pi') >= 0) execSync('sudo systemctl enable electron.service');
     else console.error('System not a pi, preventing install');
   };
 });
