@@ -28,16 +28,22 @@ obtain(obs, (hotspot, wifi, auto, { config }, fs)=> {
       console.log('Configuring wifi hotspot...');
       hotspot.configure(pfg.wifiHotspot);
       curCfg.wifiHotspot = pfg.wifiHotspot;
-    } else if (pfg.wifi && !configsMatch(curCfg.wifi, pfg.wifi)) {
+    }
+
+    if (pfg.wifi && !configsMatch(curCfg.wifi, pfg.wifi)) {
       console.log('Configuring wifi...');
       wifi.configure(pfg.wifi);
       curCfg.wifi = pfg.wifi;
-    } else if (!configsMatch(curCfg.autostart, pfg.autostart)) {
+    }
+
+    if (!configsMatch(curCfg.autostart, pfg.autostart)) {
       console.log('Configuring autostart...');
       if (pfg.autostart) auto.configure();
       else auto.remove();
       curCfg.autostart = pfg.autostart;
-    } else if (pfg.smoothShutdown) {
+    }
+
+    if (pfg.smoothShutdown) {
       console.log('smooth shutdown');
     }
 
