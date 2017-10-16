@@ -1,4 +1,4 @@
-obtain(['./src/utils.js', 'child_process'], ({ copyConfigFile, call: Call }, { execSync })=> {
+obtain(['./src/utils.js', 'child_process', 'fs'], ({ copyConfigFile, call: Call }, { execSync }, fs)=> {
 
   var mainDir = __dirname.substring(0, __dirname.indexOf('piFig/src'));
   var startup = 'sudo startx ' + mainDir + 'node_modules/.bin/electron ' + mainDir;
@@ -6,7 +6,8 @@ obtain(['./src/utils.js', 'child_process'], ({ copyConfigFile, call: Call }, { e
   console.log(startup);
 
   exports.remove = ()=> {
-    if (__dirname.indexOf('/home/pi') >= 0) execSync('sudo systemctl disable electron.service');
+    if (fs.existsSync('/etc/systemd/system/electron.service'))
+      execSync('sudo systemctl disable electron.service');
     else console.error('System not a pi, preventing uninstall');
   };
 
