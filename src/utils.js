@@ -3,7 +3,7 @@ obtain(['fs', 'child_process'], (fs, { spawn })=> {
     var orig = fs.readFileSync(src).toString();
     for (var key in fillObj) {
       if (fillObj.hasOwnProperty(key)) {
-        orig = orig.replace('${' + key + '}', fillObj[key]);
+        orig = orig.replace(new RegExp('\${([' + key + '^}]*)}', 'g'), fillObj[key]);
       }
     }
 
