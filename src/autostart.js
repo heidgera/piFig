@@ -12,7 +12,6 @@ obtain(['./src/utils.js', 'child_process', 'fs'], ({ copyConfigFile, call: Call 
   };
 
   exports.configure = ()=> {
-    exports.remove();
     copyConfigFile('./configFiles/autostart', '/etc/systemd/system/electron.service', { APP_NAME: mainDir });
     if (__dirname.indexOf('/home/pi') >= 0) execSync('sudo systemctl enable electron.service');
     else console.error('System not a pi, preventing install');
