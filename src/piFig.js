@@ -55,8 +55,8 @@ obtain(obs, (hotspot, wifi, auto, soft, { config }, services, fs)=> {
       soft.configure(pfg.softShutdown.pin);
     }
 
-    if (!configsMatch(curCfg.watchGit, pfg.watchGit)) {
-      if (pfg.watchGit) services.configure('gitTrack', 'Autotrack git repo', `/usr/bin/node ${__dirname}/gitCheck.js ${pfg.gitWatch}`);
+    if (!configsMatch(curCfg.gitWatch, pfg.gitWatch)) {
+      if (pfg.gitWatch) services.configure('gitTrack', 'Autotrack git repo', `/usr/bin/node ${__dirname}/gitCheck.js ${pfg.gitWatch}`);
       else services.disable('gitTrack');
     }
 
