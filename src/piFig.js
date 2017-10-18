@@ -1,6 +1,14 @@
-var obs = ['./src/hotspot.js', './src/wifi.js', './src/autostart.js', '/boot/piConfig.js', 'fs'];
+var obs = [
+  './src/hotspot.js',
+   './src/wifi.js',
+   './src/autostart.js',
+   './src/softShutdown.js',
+   '/boot/piConfig.js',
+   './src/createService.js',
+   'fs',
+];
 
-obtain(obs, (hotspot, wifi, auto, { config }, fs)=> {
+obtain(obs, (hotspot, wifi, auto, soft, { config }, services, fs)=> {
   var pfg = config.piFig;
   if (pfg) {
     var confDir = './currentConfig.json';
@@ -43,8 +51,13 @@ obtain(obs, (hotspot, wifi, auto, { config }, fs)=> {
       curCfg.autostart = pfg.autostart;
     }
 
-    if (pfg.smoothShutdown) {
-      console.log('smooth shutdown');
+    if (pfg.softShutdown && !configsMatch(curCfg.softShutdown, pfg.softShutdown)) {
+      soft.configure(pfg.softShutdown.pin);
+    }
+
+    if (!configsMatch(curCfg.watchGit, pfg.watchGit)) {
+      if (pfg.watchGit) services.configure('gitTrack', 'Autotrack git repo', `/usr/bin/node ${__dirname}/gitCheck.js ${pfg.gitWatch}`);
+      else services.disable('gitTrack');
     }
 
     fs.writeFileSync(confDir, JSON.stringify(curCfg));
