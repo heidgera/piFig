@@ -16,9 +16,9 @@ setInterval(()=> {
   exec('git fetch', opts, (err, stdout, stderr)=> {
     if (err || stderr) return -1;
     else {
-      var localHash = call('git rev-parse @');
-      var remoteHash = call('git rev-parse @{u}');
-      var baseHash = call('git merge-base @ @{u}');
+      var localHash = call('git rev-parse @').toString();
+      var remoteHash = call('git rev-parse @{u}').toString();
+      var baseHash = call('git merge-base @ @{u}').toString();
       if (remoteHash == baseHash || localHash == remoteHash) {
         console.log('Up to date.');
       } else {
