@@ -1,4 +1,4 @@
-obtain(['fs', './src/utils.js', 'child_process'], (fs, { copyConfigFile }, { exec })=> {
+obtain(['fs', './src/utils.js', 'child_process'], (fs, { copyConfigFile }, { execSync })=> {
 
   exports.configure = (pin)=> {
     copyConfigFile('./configFiles/shutdownBlob.dts', 'newBlob.dts', { SHUTDOWN_PIN: pin });

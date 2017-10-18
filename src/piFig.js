@@ -59,7 +59,7 @@ obtain(obs, (hotspot, wifi, auto, soft, { config }, services, fs)=> {
         soft.configure(shtd.controlPin);
         services.configure('powerCheck',
           'Control soft shutdown',
-          `/usr/bin/node ${serviceFolder}/gitCheck.js ${shtd.monitorPin} ${shtd.delayTime}`
+          `/usr/bin/node ${serviceFolder}/powerCheck.js ${shtd.monitorPin} ${shtd.delayTime}`
         );
       } else {
         services.disable('powerCheck');
