@@ -32,6 +32,8 @@ obtain(obs, (hotspot, wifi, auto, soft, { config }, services, fs)=> {
       }
     }
 
+    var serviceFolder = __dirname.substring(0, __dirname.indexOf('/src')) + '/services';
+
     if (pfg.wifiHotspot && !configsMatch(curCfg.wifiHotspot, pfg.wifiHotspot)) {
       console.log('Configuring wifi hotspot...');
       hotspot.configure(pfg.wifiHotspot);
@@ -51,12 +53,25 @@ obtain(obs, (hotspot, wifi, auto, soft, { config }, services, fs)=> {
       curCfg.autostart = pfg.autostart;
     }
 
-    if (pfg.softShutdown && !configsMatch(curCfg.softShutdown, pfg.softShutdown)) {
-      soft.configure(pfg.softShutdown.pin);
+    if (!configsMatch(curCfg.softShutdown, pfg.softShutdown)) {
+      if (pfg.softShutdown) {
+        var shtd = pfg.softShutdown;
+        soft.configure(shtd.controlPin);
+        services.configure('powerCheck',
+          'Control soft shutdown',
+          `/usr/bin/node ${serviceFolder}/gitCheck.js ${shtd.monitorPin} ${shtd.delayTime}`
+        );
+      } else {
+        services.disable('powerCheck');
+      }
     }
 
     if (!configsMatch(curCfg.gitWatch, pfg.gitWatch)) {
-      if (pfg.gitWatch) services.configure('gitTrack', 'Autotrack git repo', `/usr/bin/node ${__dirname}/gitCheck.js ${pfg.gitWatch}`);
+      if (pfg.gitWatch) services.configure(
+        'gitTrack',
+        'Autotrack git repo',
+        `/usr/bin/node ${serviceFolder}/gitCheck.js ${pfg.gitWatch}`
+      );
       else services.disable('gitTrack');
     }
 
