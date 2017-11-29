@@ -1,14 +1,13 @@
 var obs = [
   './src/hotspot.js',
    './src/wifi.js',
-   './src/autostart.js',
    './src/softShutdown.js',
    '/boot/piConfig.js',
    './src/createService.js',
    'fs',
 ];
 
-obtain(obs, (hotspot, wifi, auto, soft, { config }, services, fs)=> {
+obtain(obs, (hotspot, wifi, soft, { config }, services, fs)=> {
   var pfg = config.piFig;
   if (pfg) {
     var confDir = './currentConfig.json';
@@ -33,6 +32,7 @@ obtain(obs, (hotspot, wifi, auto, soft, { config }, services, fs)=> {
     }
 
     var serviceFolder = __dirname.substring(0, __dirname.indexOf('/src')) + '/services';
+    var mainDir = __dirname.substring(0, __dirname.indexOf('/piFig/src'));
 
     if (pfg.wifiHotspot && !configsMatch(curCfg.wifiHotspot, pfg.wifiHotspot)) {
       console.log('Configuring wifi hotspot...');
@@ -48,8 +48,12 @@ obtain(obs, (hotspot, wifi, auto, soft, { config }, services, fs)=> {
 
     if (!configsMatch(curCfg.autostart, pfg.autostart)) {
       console.log('Configuring autostart...');
-      if (pfg.autostart) auto.configure();
-      else auto.remove();
+      if (pfg.autostart) services.configure(
+        'electron',
+        'Autostart main application',
+        `/usr/bin/startx ${mainDir}/node_modules/.bin/electron ${mainDir}`
+      );
+      else services.disable('electron');
       curCfg.autostart = pfg.autostart;
     }
 
@@ -64,15 +68,19 @@ obtain(obs, (hotspot, wifi, auto, soft, { config }, services, fs)=> {
       } else {
         services.disable('powerCheck');
       }
+
+      curCfg.softShutdown = pfg.softShutdown;
     }
 
     if (!configsMatch(curCfg.gitWatch, pfg.gitWatch)) {
       if (pfg.gitWatch) services.configure(
         'gitTrack',
         'Autotrack git repo',
-        `/usr/bin/node ${serviceFolder}/gitCheck.js ${pfg.gitWatch}`
+        `/usr/bin/node ${serviceFolder}/gitCheck.js ${mainDir}`
       );
       else services.disable('gitTrack');
+
+      curCfg.gitWatch = pfg.gitWatch;
     }
 
     fs.writeFileSync(confDir, JSON.stringify(curCfg));
