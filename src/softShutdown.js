@@ -8,7 +8,7 @@ obtain(['fs', './src/utils.js', 'child_process'], (fs, { copyConfigFile }, { exe
       fs.mkdirSync(serviceFolder + '/node_modules');
     }
 
-    execSync('npm install onoff');
+    execSync('npm install onoff', { cwd: serviceFolder });
 
     console.log('Configured soft shutdown.');
   };
