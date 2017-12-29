@@ -57,6 +57,17 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs)=> {
       curCfg.autostart = pfg.autostart;
     }
 
+    if (!configsMatch(curCfg.autostartNode, pfg.autostartNode)) {
+      console.log('Configuring node autostart...');
+      if (pfg.autostart) services.configure(
+        'node',
+        'Autostart main application',
+        `/usr/bin/node ${mainDir}`
+      );
+      else services.disable('node');
+      curCfg.autostart = pfg.autostart;
+    }
+
     if (!configsMatch(curCfg.softShutdown, pfg.softShutdown)) {
       if (pfg.softShutdown) {
         var shtd = pfg.softShutdown;
