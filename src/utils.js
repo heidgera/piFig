@@ -1,4 +1,4 @@
-obtain(['fs', 'child_process'], (fs, { spawn })=> {
+obtain(['fs', 'child_process', 'os'], (fs, { spawn }, os)=> {
   exports.copyConfigFile = (src, dest, fillObj)=> {
     var orig = fs.readFileSync(src).toString();
     for (var key in fillObj) {
@@ -8,6 +8,23 @@ obtain(['fs', 'child_process'], (fs, { spawn })=> {
     }
 
     fs.writeFileSync(dest, orig);
+  };
+
+  exports.getIpAddress = ()=> {
+    var addresses = [];
+
+    var interfaces = os.networkInterfaces();
+    var addresses = [];
+    for (var k in interfaces) {
+      for (var k2 in interfaces[k]) {
+        var address = interfaces[k][k2];
+        if (address.family === 'IPv4' && !address.internal) {
+          addresses.push(address.address);
+        }
+      }
+    }
+
+    return addresses;
   };
 
   exports.call = function (cmd) {
