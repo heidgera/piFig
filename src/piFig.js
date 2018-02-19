@@ -5,13 +5,10 @@ var obs = [
    '/boot/piConfig.js',
    './src/createService.js',
    'fs',
-   'global-keypress',
    'child_process',
 ];
 
-obtain(obs, (hotspot, wifi, soft, { config }, services, fs, Keypress, { execSync })=> {
-
-  var keys = new Keypress();
+obtain(obs, (hotspot, wifi, soft, { config }, services, fs, { execSync })=> {
 
   var pfg = config.piFig;
   if (pfg) {
@@ -132,6 +129,8 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs, Keypress, { execSync
   }
 
   var ctrl = false;
+
+  var keys = new require('global-kepress')();
 
   let id = keys.on('press', data => {
     if (data.includes('Ctrl')) {
