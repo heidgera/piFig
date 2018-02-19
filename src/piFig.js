@@ -6,9 +6,10 @@ var obs = [
    './src/createService.js',
    'fs',
    'global-keypress',
+   'child_process',
 ];
 
-obtain(obs, (hotspot, wifi, soft, { config }, services, fs, Keypress)=> {
+obtain(obs, (hotspot, wifi, soft, { config }, services, fs, Keypress, { execSync })=> {
 
   var keys = new Keypress();
 
@@ -42,6 +43,9 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs, Keypress)=> {
     if (!curCfg.serviceFolder) {
       curCfg.serviceFolder = serviceFolder;
       curCfg.mainDir = mainDir;
+
+      execSync(`mkdir node_modules`);
+      execSync(`npm install global-keypress`);
     } else {
       serviceFolder = curCfg.serviceFolder;
       mainDir = curCfg.mainDir;
