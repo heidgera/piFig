@@ -5,10 +5,13 @@ var obs = [
    '/boot/piConfig.js',
    './src/createService.js',
    'fs',
-   'iohook',
+   'global-keypress',
 ];
 
-obtain(obs, (hotspot, wifi, soft, { config }, services, fs, iohook)=> {
+obtain(obs, (hotspot, wifi, soft, { config }, services, fs, Keypress)=> {
+
+  var keys = new Keypress();
+
   var pfg = config.piFig;
   if (pfg) {
     var confDir = (process.env.HOME || process.env.HOMEPATH ||
@@ -124,9 +127,15 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs, iohook)=> {
     fs.writeFileSync(confDir, JSON.stringify(curCfg));
   }
 
-  let id = ioHook.registerShortcut([29, 65], (keys) => {
-    services.stop('electron');
+  var ctrl = false;
+
+  let id = keys.on('press', data => {
+    if (data.includes('Ctrl')) {
+      ctrl = !data.includes('released');
+    } else if (data.includes('ESC')) {
+      if (ctrl) services.stop('electron');
+    }
   });
 
-  iohook.start();
+  keys.start();
 });
