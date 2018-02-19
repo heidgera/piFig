@@ -10,7 +10,8 @@ var obs = [
 obtain(obs, (hotspot, wifi, soft, { config }, services, fs)=> {
   var pfg = config.piFig;
   if (pfg) {
-    var confDir = './currentConfig.json';
+    var confDir = (process.env.HOME || process.env.HOMEPATH ||
+        process.env.USERPROFILE) + '/.currentConfig.json';
     let curCfg = {};
     if (fs.existsSync(confDir)) {
       let data = fs.readFileSync(confDir); //file exists, get the contents
@@ -34,6 +35,14 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs)=> {
     var serviceFolder = __dirname.substring(0, __dirname.indexOf('/src')) + '/services';
     var mainDir = __dirname.substring(0, __dirname.indexOf('/piFig/src'));
 
+    if (!curCfg.serviceFolder) {
+      curCfg.serviceFolder = serviceFolder;
+      curCfg.mainDir = mainDir;
+    } else {
+      serviceFolder = curCfg.serviceFolder;
+      mainDir = curCfg.mainDir;
+    }
+
     if (pfg.wifiHotspot && !configsMatch(curCfg.wifiHotspot, pfg.wifiHotspot)) {
       console.log('Configuring wifi hotspot...');
       hotspot.configure(pfg.wifiHotspot);
@@ -46,6 +55,12 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs)=> {
       curCfg.wifi = pfg.wifi;
     }
 
+    if (pfg.wifiUser && !configsMatch(curCfg.wifiUser, pfg.wifiUser)) {
+      console.log('Configuring wifi...');
+      wifi.configure(pfg.wifiUser);
+      curCfg.wifiUser = pfg.wifiUser;
+    }
+
     if (!configsMatch(curCfg.autostart, pfg.autostart)) {
       console.log('Configuring autostart...');
       if (pfg.autostart) services.configure(
@@ -53,7 +68,7 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs)=> {
         'Autostart main application',
         `/usr/bin/startx ${mainDir}/node_modules/.bin/electron ${mainDir}`
       );
-      else services.disable('electron');
+      else if (curCfg.autostart) services.disable('electron');
       curCfg.autostart = pfg.autostart;
     }
 
@@ -64,7 +79,7 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs)=> {
         'Autostart main application',
         `/usr/bin/node ${mainDir}`
       );
-      else services.disable('node');
+      else if (curCfg.autostartNode) services.disable('node');
       curCfg.autostart = pfg.autostart;
     }
 
@@ -92,6 +107,17 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs)=> {
       else services.disable('gitTrack');
 
       curCfg.gitWatch = pfg.gitWatch;
+    }
+
+    if (!curCfg.watchPiFig) {
+      console.log('Setting up autowatch...');
+      if (pfg.autostart) services.configure(
+        'piFig',
+        'Monitor piFig file on startup',
+        `/usr/bin/node ${mainDir}/piFig/install.js`
+      );
+
+      curCfg.watchPiFig = true;
     }
 
     fs.writeFileSync(confDir, JSON.stringify(curCfg));
