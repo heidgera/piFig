@@ -127,4 +127,6 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs, iohook)=> {
   let id = ioHook.registerShortcut([29, 65], (keys) => {
     services.stop('electron');
   });
+
+  iohook.start();
 });
