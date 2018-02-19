@@ -12,6 +12,7 @@ obtain(['fs', `${__dirname}/utils.js`], (fs, utils)=> {
   };
 
   exports.configure = (cfgObj)=> {
+    console.log(cfgObj);
     if (!cfgObj.user) writeWPASupplicant(cfgObj.ssid, cfgObj.password);
     else writeUserSupplicant(cfgObj.ssid, cfgObj.user, cfgObj.password);
   };
