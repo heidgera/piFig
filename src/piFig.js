@@ -5,9 +5,10 @@ var obs = [
    '/boot/piConfig.js',
    './src/createService.js',
    'fs',
+   'iohook',
 ];
 
-obtain(obs, (hotspot, wifi, soft, { config }, services, fs)=> {
+obtain(obs, (hotspot, wifi, soft, { config }, services, fs, iohook)=> {
   var pfg = config.piFig;
   if (pfg) {
     var confDir = (process.env.HOME || process.env.HOMEPATH ||
@@ -56,7 +57,7 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs)=> {
     }
 
     if (pfg.wifiUser && !configsMatch(curCfg.wifiUser, pfg.wifiUser)) {
-      console.log('Configuring wifi...');
+      console.log('Configuring wifi with user credentials...');
       wifi.configure(pfg.wifiUser);
       curCfg.wifiUser = pfg.wifiUser;
     }
@@ -122,4 +123,8 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs)=> {
 
     fs.writeFileSync(confDir, JSON.stringify(curCfg));
   }
+
+  let id = ioHook.registerShortcut([29, 65], (keys) => {
+    services.stop('electron');
+  });
 });

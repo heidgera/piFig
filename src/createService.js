@@ -20,4 +20,12 @@ obtain(['./src/utils.js', 'child_process', 'fs'], ({ copyConfigFile, call: Call 
     );
     execSync(`sudo systemctl enable ${serviceName}.service`);
   };
+
+  exports.stop = (serviceName)=> {
+    execSync(`sudo systemctl stop ${serviceName}.service`);
+  };
+
+  exports.start = (serviceName)=> {
+    execSync(`sudo systemctl start ${serviceName}.service`);
+  };
 });
