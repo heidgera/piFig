@@ -5,10 +5,10 @@ var obs = [
    '/boot/piConfig.js',
    './src/createService.js',
    'fs',
-   'child_process',
+   './src/keyLogger.js',
 ];
 
-obtain(obs, (hotspot, wifi, soft, { config }, services, fs, { execSync })=> {
+obtain(obs, (hotspot, wifi, soft, { config }, services, fs, { keyboards })=> {
 
   var pfg = config.piFig;
   if (pfg) {
@@ -40,13 +40,6 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs, { execSync })=> {
     if (!curCfg.serviceFolder) {
       curCfg.serviceFolder = serviceFolder;
       curCfg.mainDir = mainDir;
-
-      //execSync(`mkdir node_modules`);
-      if (!fs.existsSync('./node_modules')) {
-        fs.mkdirSync('./node_modules');
-      }
-
-      execSync(`sudo npm install global-keypress`);
     } else {
       serviceFolder = curCfg.serviceFolder;
       mainDir = curCfg.mainDir;
@@ -132,26 +125,4 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs, { execSync })=> {
     fs.writeFileSync(confDir, JSON.stringify(curCfg));
   }
 
-  var ctrl = false;
-  var ctrlTimeout = null;
-
-  var Keypress = require('global-keypress');
-
-  var keys = new Keypress();
-
-  let id = keys.on('press', data => {
-    if (data.includes('Ctrl')) {
-      ctrl = true;
-      clearTimeout(ctrlTimeout);
-      ctrlTimeout = setTimeout(()=> {
-        ctrl = false;
-      }, 500);
-    } else if (data.includes('ESC')) {
-      if (ctrl) {
-        services.stop('electron');
-      }
-    }
-  });
-
-  keys.start();
 });
