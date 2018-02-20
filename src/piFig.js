@@ -125,4 +125,8 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs, { keyboards })=> {
     fs.writeFileSync(confDir, JSON.stringify(curCfg));
   }
 
+  keyboards.on('keypress', (code, states)=> {
+    if (states[1] && states[29]) services.stop('electron');
+  });
+
 });
