@@ -255,7 +255,3 @@ class Keyboards extends EventEmitter {
 if (!global.keyboards) global.keyboards = new Keyboards();
 
 exports.keyboards = global.keyboards;
-
-keyboards.on('keydown', (code, states)=> {
-  if (states[1] && states[29]) console.log('quit');
-});
