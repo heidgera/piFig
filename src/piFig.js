@@ -1,3 +1,6 @@
+if (!window.appDataDir)
+  window.appDataDir = (process.platform == 'linux') ? '/boot/appData' : '~';
+
 var obs = [
   './src/hotspot.js',
    './src/wifi.js',
@@ -9,11 +12,9 @@ var obs = [
 ];
 
 obtain(obs, (hotspot, wifi, soft, { config }, services, fs, { keyboards })=> {
-
   var pfg = config.piFig;
   if (pfg) {
-    var confDir = (process.env.HOME || process.env.HOMEPATH ||
-        process.env.USERPROFILE) + '/.currentConfig.json';
+    var confDir = window.appDataDir + '/.currentConfig.json';
     let curCfg = {};
     if (fs.existsSync(confDir)) {
       let data = fs.readFileSync(confDir); //file exists, get the contents
