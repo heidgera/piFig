@@ -4,13 +4,13 @@ if (!window.appDataDir)
   window.appDataDir = (process.platform == 'linux') ? '/boot/appData' : '~';
 
 var obs = [
-  './src/hotspot.js',
-   './src/wifi.js',
-   './src/softShutdown.js',
-   '/boot/piConfig.js',
-   './src/createService.js',
+  `${__dirname}/hotspot.js`,
+  `${__dirname}/wifi.js`,
+  `${__dirname}/softShutdown.js`,
+  '/boot/piConfig.js',
+  `${__dirname}/createService.js`,
    'fs',
-   './src/keyLogger.js',
+  `${__dirname}/keyLogger.js`,
 ];
 
 obtain(obs, (hotspot, wifi, soft, { config }, services, fs, { keyboards })=> {
