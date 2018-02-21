@@ -1,3 +1,5 @@
+if (!window) var window = global;
+
 if (!window.appDataDir)
   window.appDataDir = (process.platform == 'linux') ? '/boot/appData' : '~';
 
