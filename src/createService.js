@@ -12,7 +12,7 @@ obtain(['./src/utils.js', 'child_process', 'fs'], ({ copyConfigFile, call: Call 
   };
 
   exports.configure = (serviceName, serviceDescription, startCommand)=> {
-    copyConfigFile(`${__dirname}/configFiles/serviceTemplate`,
+    copyConfigFile(`${__dirname}/../configFiles/serviceTemplate`,
       `/etc/systemd/system/${serviceName}.service`, {
         START_COMMAND: startCommand,
         DESCRIPTION_TEXT: serviceDescription,
