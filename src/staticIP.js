@@ -5,8 +5,8 @@ obtain(['fs', `${__dirname}/utils.js`], (fs, utils)=> {
                           { STATIC_IP: ip });
   };
 
-  exports.configure = (cfgObj)=> {
-    writeDHCPConf(cfgObj.staticIP);
+  exports.configure = (ip)=> {
+    writeDHCPConf(ip);
   };
 
 });
