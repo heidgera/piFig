@@ -200,7 +200,8 @@ class Keyboards extends EventEmitter {
           device.path = `/dev/input/${which}`;
           if (!_this.kbds.find((kbd)=>kbd.Sysfs == device.Sysfs)) {
             console.log(`${device.Name} was found.`);
-            device.file = fs.createReadStream(device.path);
+            var fd = fs.openSync(device.path, 'r');
+            device.file = fs.createReadStream(undefined, { fd: fd });
             device.file.on('error', (err)=> {
               console.log(err);
               console.log(`${device.Name} was removed from the system.`);
