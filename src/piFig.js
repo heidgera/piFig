@@ -60,6 +60,12 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs, { keyboards })=> {
       curCfg.wifi = pfg.wifi;
     }
 
+    if (pfg.staticIP && !configsMatch(curCfg.staticIP, pfg.staticIP)) {
+      console.log('Configuring staticIP...');
+      wifi.configure(pfg.wifi);
+      curCfg.wifi = pfg.wifi;
+    }
+
     if (pfg.wifiUser && !configsMatch(curCfg.wifiUser, pfg.wifiUser)) {
       console.log('Configuring wifi with user credentials...');
       wifi.configure(pfg.wifiUser);
