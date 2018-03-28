@@ -202,6 +202,7 @@ class Keyboards extends EventEmitter {
             console.log(`${device.Name} was found.`);
             device.file = fs.createReadStream(device.path);
             device.file.on('error', (err)=> {
+              console.log(err);
               console.log(`${device.Name} was removed from the system.`);
               _this.kbds.splice(_this.kbds.indexOf(device), 1);
             });
