@@ -6,6 +6,7 @@ if (!window.appDataDir)
 var obs = [
   `${__dirname}/hotspot.js`,
   `${__dirname}/wifi.js`,
+  `${__dirname}/staticIP.js`,
   `${__dirname}/softShutdown.js`,
   '/boot/piConfig.js',
   `${__dirname}/createService.js`,
@@ -13,7 +14,7 @@ var obs = [
   `${__dirname}/keyLogger.js`,
 ];
 
-obtain(obs, (hotspot, wifi, soft, { config }, services, fs, { keyboards })=> {
+obtain(obs, (hotspot, wifi, staticIP, soft, { config }, services, fs, { keyboards })=> {
   var pfg = config.piFig;
   if (pfg) {
     var confDir = window.appDataDir + '/.currentConfig.json';
@@ -62,8 +63,8 @@ obtain(obs, (hotspot, wifi, soft, { config }, services, fs, { keyboards })=> {
 
     if (pfg.staticIP && !configsMatch(curCfg.staticIP, pfg.staticIP)) {
       console.log('Configuring staticIP...');
-      wifi.configure(pfg.wifi);
-      curCfg.wifi = pfg.wifi;
+      staticIP.configure(pfg.staticIP);
+      curCfg.staticIP = pfg.staticIP;
     }
 
     if (pfg.wifiUser && !configsMatch(curCfg.wifiUser, pfg.wifiUser)) {
