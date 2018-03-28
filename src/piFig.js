@@ -7,6 +7,7 @@ var obs = [
   `${__dirname}/hotspot.js`,
   `${__dirname}/wifi.js`,
   `${__dirname}/staticIP.js`,
+  `${__dirname}/preventSleep.js`,
   `${__dirname}/softShutdown.js`,
   '/boot/piConfig.js',
   `${__dirname}/createService.js`,
@@ -14,7 +15,7 @@ var obs = [
   `${__dirname}/keyLogger.js`,
 ];
 
-obtain(obs, (hotspot, wifi, staticIP, soft, { config }, services, fs, { keyboards })=> {
+obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, fs, { keyboards })=> {
   var pfg = config.piFig;
   if (pfg) {
     var confDir = window.appDataDir + '/.currentConfig.json';
@@ -59,6 +60,12 @@ obtain(obs, (hotspot, wifi, staticIP, soft, { config }, services, fs, { keyboard
       console.log('Configuring wifi...');
       wifi.configure(pfg.wifi);
       curCfg.wifi = pfg.wifi;
+    }
+
+    if (pfg.preventSleep && !configsMatch(curCfg.preventSleep, pfg.preventSleep)) {
+      console.log('Prevent display sleep...');
+      preventSleep.configure(pfg.preventSleep);
+      curCfg.preventSleep = pfg.preventSleep;
     }
 
     if (pfg.staticIP && !configsMatch(curCfg.staticIP, pfg.staticIP)) {
