@@ -3,7 +3,7 @@ global.obtain = (addr, func)=> {
   var objs = [];
   if (addr.length <= 0) func();
   else {
-    addr.forEach(function(adr, ind, arr) {
+    addr.forEach(function (adr, ind, arr) {
       objs[ind] = require(adr);
     });
 
@@ -12,4 +12,4 @@ global.obtain = (addr, func)=> {
 
 };
 
-require('./src/piFig.js');
+require('./src/machineSetup.js');

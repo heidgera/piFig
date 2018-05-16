@@ -1,7 +1,9 @@
 if (!window) var window = global;
 
 if (!window.appDataDir)
-  window.appDataDir = (process.platform == 'linux') ? '/boot/appData' : '~';
+  window.appDataDir = (process.platform != 'linux') ?  './ForBoot/appData' :
+                      (process.arch == 'x64') ? '/usr/local/appData' :
+                      '/boot/appData';
 
 var obs = [
   `${__dirname}/hotspot.js`,
@@ -9,7 +11,7 @@ var obs = [
   `${__dirname}/staticIP.js`,
   `${__dirname}/preventSleep.js`,
   `${__dirname}/softShutdown.js`,
-  '/boot/piConfig.js',
+  `${window.appDataDir}/machineConfig.js`,
   `${__dirname}/createService.js`,
    'fs',
   `${__dirname}/keyLogger.js`,
