@@ -1,9 +1,9 @@
 if (!window) var window = global;
 
-if (!window.appDataDir)
-  window.appDataDir = (process.platform != 'linux') ?  './ForBoot/appData' :
-                      (process.arch == 'x64') ? '/usr/local/appData' :
-                      '/boot/appData';
+if (!window.setupDir)
+  window.setupDir = (process.platform != 'linux') ?  './ForBoot/setup' :
+                      (process.arch == 'x64') ? '/usr/local/setup' :
+                      '/boot/setup';
 
 var obs = [
   `${__dirname}/hotspot.js`,
@@ -11,7 +11,7 @@ var obs = [
   `${__dirname}/staticIP.js`,
   `${__dirname}/preventSleep.js`,
   `${__dirname}/softShutdown.js`,
-  `${window.appDataDir}/machineConfig.js`,
+  `${window.setupDir}/machineConfig.js`,
   `${__dirname}/createService.js`,
    'fs',
   `${__dirname}/keyLogger.js`,
@@ -20,7 +20,7 @@ var obs = [
 obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, fs, { keyboards })=> {
   var pfg = config.piFig;
   if (pfg) {
-    var confDir = window.appDataDir + '/.currentConfig.json';
+    var confDir = window.setupDir + '/.currentConfig.json';
     let curCfg = {};
     if (fs.existsSync(confDir)) {
       let data = fs.readFileSync(confDir); //file exists, get the contents
