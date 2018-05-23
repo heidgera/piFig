@@ -34,7 +34,7 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
                 this.emit('connected', drive);
                 if (drive.mountpoints.length) this.emit('mounted', drive);
               } else {
-                if (exists && exists.mountpoints.length && !drive.mountpoints.length) {
+                if (exists && !exists.mountpoints.length && drive.mountpoints.length) {
                   this.emit('mounted', drive);
                 }
               }
@@ -42,7 +42,7 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
 
             _this.drives = usb;
           });
-        }, 5000);
+        }, 1000);
       }
 
       mount(drive) {
