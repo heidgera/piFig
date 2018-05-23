@@ -6,7 +6,7 @@ var obtains = [
   'fs',
 ];
 
-obtain([`${__dirname}/src/driveWatch.js`], ({ monitor }, { execSync, exec }, fs)=> {
+obtain(obtains, ({ monitor }, { execSync, exec }, fs)=> {
   monitor.begin();
   console.log('start drivewatch');
 
