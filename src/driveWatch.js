@@ -24,6 +24,8 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
               throw error;
             }
 
+            console.log(drives);
+
             var usb = drives.filter(drive=>drive.isUSB);
             usb.forEach((drive, ind, arr)=> {
               let exists = this.drives.find(drv=>drv.device == drive.device);
@@ -39,7 +41,7 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
 
             _this.drives = usb;
           });
-        }, 1000);
+        }, 5000);
       }
 
       mount(drive) {
