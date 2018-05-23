@@ -18,15 +18,16 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
 
       begin() {
         var _this = this;
+        drivelist.list((error, drives) => {
+          this.drives = drives;
+        });
         this.interval = setInterval(()=> {
           drivelist.list((error, drives) => {
             if (error) {
               throw error;
             }
 
-            console.log(drives);
-
-            var usb = drives.filter(drive=>drive.isUSB);
+            var usb = drives.filter(drive=>drive.devicePath.includes('usb') || drive.isUSB);
             usb.forEach((drive, ind, arr)=> {
               let exists = this.drives.find(drv=>drv.device == drive.device);
               if (!exists) {
@@ -50,7 +51,7 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
         if (process.platform == 'linux') {
           //get the label in capture[1], UUID in capture[2], and type in 3
           var match = /[^:]+: LABEL="([^"]+)" UUID="([^"]+)" TYPE="([^"]+)"/g;
-          var list = match.exec(execSync(`sudo blkid ${drive.device}`));
+          var list = match.exec(execSync(`sudo blkid ${drive.device}*`));
           execSync(`sudo mkdir /mnt/${list[2]}`);
           exec(`sudo mount -t ${list[3]} ${drive.device} /mnt/${list[2]}`, (err, stdout, stderr)=> {
             console.log(`mounted ${list[1]}`);
