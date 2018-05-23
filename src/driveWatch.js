@@ -48,11 +48,19 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
       mount(drive) {
         if (process.platform == 'linux') {
           //get the label in capture[1], UUID in capture[2], and type in 3
-          var match = /[^:]+: LABEL="([^"]+)" UUID="([^"]+)" TYPE="([^"]+)"/g;
-          var list = match.exec(execSync(`sudo blkid ${drive.device}*`));
-          execSync(`sudo mkdir /mnt/${list[2]}`);
-          exec(`sudo mount -t ${list[3]} ${drive.device} /mnt/${list[2]}`, (err, stdout, stderr)=> {
-            console.log(`mounted ${list[1]}`);
+          var label_match = /\WLABEL="([^"]+)"/g;
+          var id_match = /\WUUID="([^"]+)"/g;
+          var type_match = /\WTYPE="([^"]+)"/g;
+          var output = execSync(`sudo blkid ${drive.device}*`);
+          var label = label_match.exec(output);
+          label = (label) ? label[1] : 'usbdrive';
+
+          var id = id_match.exec(output)[1];
+          var type = type_match.exec(output)[1];
+
+          execSync(`sudo mkdir /mnt/${id}`);
+          exec(`sudo mount -t ${type} --uuid ${id} /mnt/${id}`, (err, stdout, stderr)=> {
+            console.log(`mounted ${label}`);
           });
         }
       }
