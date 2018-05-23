@@ -46,8 +46,6 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
       }
 
       mount(drive) {
-
-        console.log(list[1]);
         if (process.platform == 'linux') {
           //get the label in capture[1], UUID in capture[2], and type in 3
           var match = /[^:]+: LABEL="([^"]+)" UUID="([^"]+)" TYPE="([^"]+)"/g;
