@@ -58,7 +58,7 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
           var id = id_match.exec(output)[1];
           var type = type_match.exec(output)[1];
 
-          execSync(`sudo mkdir /mnt/${id}`);
+          execSync(`sudo mkdir -p /mnt/${id}`);
           exec(`sudo mount -t ${type} --uuid ${id} /mnt/${id}`, (err, stdout, stderr)=> {
             console.log(`mounted ${label}`);
           });
