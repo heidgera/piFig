@@ -1,4 +1,4 @@
-obtain(['fs', './src/utils.js', 'child_process'], (fs, { copyConfigFile }, { exec })=> {
+obtain(['fs', `${__dirname}/utils.js`, 'child_process'], (fs, { copyConfigFile }, { exec })=> {
   var writeInterfaceFile = ()=> {
     copyConfigFile(`${__dirname}/../configFiles/interfaces`, '/etc/network/interfaces');
   };

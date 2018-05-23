@@ -1,6 +1,12 @@
 require('../common/src/muse/main.js');
 
-obtain([`${__dirname}/src/driveWatch.js`], ({ monitor })=> {
+var obtains = [
+  `${__dirname}/src/driveWatch.js`,
+  'child_process',
+  'fs',
+];
+
+obtain([`${__dirname}/src/driveWatch.js`], ({ monitor }, { execSync, exec }, fs)=> {
   monitor.begin();
   console.log('start drivewatch');
 
@@ -11,6 +17,10 @@ obtain([`${__dirname}/src/driveWatch.js`], ({ monitor })=> {
 
   monitor.on('mounted', (which)=> {
     console.log('just mounted');
-    console.log(which);
+
+    if (fs.existsSync(`${which.mountpoints[0]}/update/update.js`)) {
+      var update = require(`${which.mountpoints[0]}/update/update.js`);
+      console.log(update);
+    } else monitor.unmount(which);
   });
 });

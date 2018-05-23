@@ -1,4 +1,4 @@
-obtain(['./src/utils.js', 'child_process', 'fs'], ({ copyConfigFile, call: Call }, { execSync }, fs)=> {
+obtain([`${__dirname}/utils.js`, 'child_process', 'fs'], ({ copyConfigFile, call: Call }, { execSync }, fs)=> {
 
   var mainDir = __dirname.substring(0, __dirname.indexOf('/piFig/src'));
   var startup = 'sudo startx ' + mainDir + 'node_modules/.bin/electron ' + mainDir;
