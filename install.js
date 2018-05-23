@@ -1,4 +1,4 @@
-global.obtain = (addr, func)=> {
+/*global.obtain = (addr, func)=> {
   var _this = this;
   var objs = [];
   if (addr.length <= 0) func();
@@ -10,6 +10,7 @@ global.obtain = (addr, func)=> {
     func.apply(null, objs);
   };
 
-};
+};*/
 
+require('../common/src/muse/main.js');
 require('./src/machineSetup.js');
