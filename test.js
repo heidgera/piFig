@@ -2,8 +2,10 @@ require('../common/src/muse/main.js');
 
 obtain([`${__dirname}/src/driveWatch.js`], ({ monitor })=> {
   monitor.begin();
+  console.log('start drivewatch');
 
   monitor.on('connected', (which)=> {
+    console.log(which.device);
     monitor.mount(which);
   });
 
