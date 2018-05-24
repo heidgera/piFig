@@ -2,13 +2,13 @@ if (!window) var window = global;
 
 if (!window.setupDir)
   window.setupDir = (process.platform != 'linux') ?  `${__dirname}/../ForBoot/setup/` :
-                      (process.arch == 'x64') ? '/usr/local/setup' :
-                      '/boot/setup';
+                      (process.arch == 'x64') ? '/usr/local/setup/' :
+                      '/boot/setup/';
 
 if (!window.appDataDir)
   window.appDataDir = (process.platform != 'linux') ?  `${__dirname}/../ForBoot/appData/` :
-                      (process.arch == 'x64') ? '/usr/local/appData' :
-                      '/boot/appData';
+                      (process.arch == 'x64') ? '/usr/local/appData/' :
+                      '/boot/appData/';
 
 var obs = [
   `${__dirname}/hotspot.js`,
