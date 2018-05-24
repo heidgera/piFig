@@ -27,7 +27,7 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
               throw error;
             }
 
-            var usb = drives.filter(drive=>drive.devicePath.includes('usb') || drive.isUSB);
+            var usb = drives.filter(drive=>(drive.devicePath && drive.devicePath.includes('usb')) || drive.isUSB);
             usb.forEach((drive, ind, arr)=> {
               let exists = this.drives.find(drv=>drv.device == drive.device);
               if (!exists) {
@@ -67,7 +67,7 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
       unmount(drive) {
         if (process.platform == 'linux') {
           for (var i = 0; i < drive.mountpoints.length; i++) {
-            execSync(`sudo umount ${drive.mountpoints[i]}`);
+            execSync(`sudo umount ${drive.mountpoints[i].path}`);
           }
         }
       }
