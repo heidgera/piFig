@@ -24,7 +24,7 @@ var obs = [
   'child_process',
 ];
 
-obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, fs, { keyboards }, { monitor }, { exec })=> {
+obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, fs, { keyboards }, { monitor }, { exec, execSync })=> {
   var pfg = config.piFig;
   if (pfg) {
     var confDir = window.setupDir + '/.currentConfig.json';
