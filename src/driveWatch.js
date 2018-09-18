@@ -53,12 +53,14 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
           var type_match = /\WTYPE="([^"]+)"/g;
           var output = String(execSync(`sudo blkid ${drive.device}*`));
 
+          console.log(output.split('\n'));
+
           output.split('\n').forEach((line)=> {
             if (label_match.match(line)) {
               label = 'usbdrive';
 
-              var id = id_match.exec(output)[1];
-              var type = type_match.exec(output)[1];
+              var id = id_match.exec(line)[1];
+              var type = type_match.exec(line)[1];
 
               execSync(`sudo mkdir -p /mnt/${id}`);
               exec(`sudo mount -t ${type} --uuid ${id} /mnt/${id}`, (err, stdout, stderr)=> {
