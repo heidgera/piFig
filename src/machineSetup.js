@@ -31,7 +31,13 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
     let curCfg = {};
     if (fs.existsSync(confDir)) {
       let data = fs.readFileSync(confDir); //file exists, get the contents
-      curCfg = JSON.parse(data);
+      try {
+        curCfg = JSON.parse(data);
+      } catch (e) {
+        console.log(e);
+        curCfg = {};
+      }
+
     }
 
     function configsMatch(cur, cfg) {
