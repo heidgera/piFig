@@ -29,7 +29,7 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
 
             var usb = drives.filter(drive=>(drive.devicePath && drive.devicePath.includes('usb')) || drive.isUSB);
             usb.forEach((drive, ind, arr)=> {
-              let exists = this.drives.find(drv=>drv.device == drive.device);
+              let exists = _this.drives.find(drv=>drv.device == drive.device);
               if (!exists) {
                 this.emit('connected', drive);
                 if (drive.mountpoints.length) this.emit('mounted', drive);
@@ -60,6 +60,7 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
 
               execSync(`sudo mkdir -p /mnt/${id}`);
               exec(`sudo mount -t ${type} --uuid ${id} /mnt/${id}`, (err, stdout, stderr)=> {
+                console.log(`mounted at /mnt/${id}`);
                 drive.mountpoints = [{ path: `/mnt/${id}` }];
                 this.emit('mounted', drive);
               });
