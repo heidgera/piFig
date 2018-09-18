@@ -74,6 +74,7 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
         if (process.platform == 'linux') {
           for (var i = 0; i < drive.mountpoints.length; i++) {
             execSync(`sudo umount ${drive.mountpoints[i].path}`);
+            console.log(`unmounted from /mnt/${id}`);
           }
         }
       }

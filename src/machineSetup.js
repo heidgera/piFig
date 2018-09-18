@@ -91,7 +91,9 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
           }
         }
 
+        console.log('stopping electron');
         exec('sudo systemctl stop electron.service', ()=> {
+          console.log('restarting electron');
           exec('sudo systemctl start electron.service');
         });
 
