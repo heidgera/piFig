@@ -76,6 +76,8 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
           setup: setupDir,
         };
 
+        console.log('updating app...');
+
         for (var key in update) {
           if (update.hasOwnProperty(key)) {
             if (key == 'app' || key == 'appData' || key == 'setup') {
@@ -83,6 +85,7 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
                 var base = `${which.mountpoints[0].path}/update/${key}/`;
                 update[key].forEach(path=> {
                   if (path[path.length - 1] == '/') path.length--;
+                  console.log(`copying "${paths[key] + path}"`);
                   execSync(`cp -rf "${base + path}" "${paths[key] + path}"`);
                 });
               }
