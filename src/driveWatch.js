@@ -55,8 +55,6 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
 
           output.split('\n').forEach((line)=> {
             if (label_match.test(line)) {
-              label = 'usbdrive';
-
               var id = id_match.exec(line)[1];
               var type = type_match.exec(line)[1];
 
