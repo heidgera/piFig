@@ -48,18 +48,23 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
       mount(drive) {
         if (process.platform == 'linux') {
           //get the label in capture[1], UUID in capture[2], and type in 3
-          var label_match = /\WLABEL="([^"]+)"/g;
+          var label_match = /\WLABEL="UPDATE"/g;
           var id_match = /\WUUID="([^"]+)"/g;
           var type_match = /\WTYPE="([^"]+)"/g;
           var output = execSync(`sudo blkid ${drive.device}*`);
-          var label = label_match.exec(output);
-          label = (label) ? label[1] : 'usbdrive';
 
-          var id = id_match.exec(output)[1];
-          var type = type_match.exec(output)[1];
+          output.split('\n').forEach((line)=> {
+            if (label_match.match(line)) {
+              label = 'usbdrive';
 
-          execSync(`sudo mkdir -p /mnt/${id}`);
-          exec(`sudo mount -t ${type} --uuid ${id} /mnt/${id}`, (err, stdout, stderr)=> {
+              var id = id_match.exec(output)[1];
+              var type = type_match.exec(output)[1];
+
+              execSync(`sudo mkdir -p /mnt/${id}`);
+              exec(`sudo mount -t ${type} --uuid ${id} /mnt/${id}`, (err, stdout, stderr)=> {
+              });
+            }
+
           });
         }
       }
