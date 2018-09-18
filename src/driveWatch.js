@@ -53,10 +53,8 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
           var type_match = /\WTYPE="([^"]+)"/g;
           var output = String(execSync(`sudo blkid ${drive.device}*`));
 
-          console.log(output.split('\n'));
-
           output.split('\n').forEach((line)=> {
-            if (label_match.match(line)) {
+            if (label_match.test(line)) {
               label = 'usbdrive';
 
               var id = id_match.exec(line)[1];
