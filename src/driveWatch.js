@@ -60,7 +60,7 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
 
               execSync(`sudo mkdir -p /mnt/${id}`);
               exec(`sudo mount -t ${type} --uuid ${id} /mnt/${id}`, (err, stdout, stderr)=> {
-                drive.mountpoints = [`/mnt/${id}`];
+                drive.mountpoints = [{ path: `/mnt/${id}` }];
                 this.emit('mounted', drive);
               });
             }
