@@ -51,7 +51,7 @@ obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
           var label_match = /\WLABEL="UPDATE"/g;
           var id_match = /\WUUID="([^"]+)"/g;
           var type_match = /\WTYPE="([^"]+)"/g;
-          var output = execSync(`sudo blkid ${drive.device}*`);
+          var output = String(execSync(`sudo blkid ${drive.device}*`));
 
           output.split('\n').forEach((line)=> {
             if (label_match.match(line)) {
