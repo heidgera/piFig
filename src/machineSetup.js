@@ -1,13 +1,13 @@
 if (!window) var window = global;
 
 if (!window.setupDir)
-  window.setupDir = (process.platform != 'linux') ?  `${__dirname}/../ForBoot/setup/` :
-                      (process.arch == 'x64') ? '/usr/local/setup/' :
+  window.setupDir = (process.platform != 'linux') ?  `${__dirname}/../app/ForBoot/setup/` :
+                      (process.arch == 'x64') ? `${__dirname}/../app/ForBoot/setup/` :
                       '/boot/setup/';
 
 if (!window.appDataDir)
   window.appDataDir = (process.platform != 'linux') ?  `${__dirname}/../ForBoot/appData/` :
-                      (process.arch == 'x64') ? '/usr/local/appData/' :
+                      (process.arch == 'x64') ? `${__dirname}/../app/ForBoot/setup/` :
                       '/boot/appData/';
 
 var obs = [
