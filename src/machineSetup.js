@@ -18,7 +18,7 @@ var obs = [
   `${__dirname}/softShutdown.js`,
   `${window.setupDir}/machineConfig.js`,
   `${__dirname}/createService.js`,
-   'fs',
+  'fs',
   `${__dirname}/keyLogger.js`,
   `${__dirname}/driveWatch.js`,
   'child_process',
