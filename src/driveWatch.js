@@ -2,14 +2,14 @@ if (!window) var window = global;
 
 var obtains = [
   'drivelist',
-  'µ//events.js',
+  'events',
   'child_process',
   //'node-usb-detection',
 ];
 
-obtain(obtains, (drivelist, { Emitter }, { exec, execSync })=> {
+obtain(obtains, (drivelist, { EventEmitter }, { exec, execSync })=> {
   if (!window.usbMonitor) {
-    class Monitor extends Emitter {
+    class Monitor extends EventEmitter {
       constructor() {
         super();
 
