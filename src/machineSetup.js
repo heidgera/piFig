@@ -10,6 +10,8 @@ if (!window.appDataDir)
                       (process.arch == 'x64') ? `${__dirname}/../app/ForBoot/setup/` :
                       '/boot/appData/';
 
+window.parcelRoot = __dirname.substring(0, __dirname.indexOf('/piFig/src'));
+
 var obs = [
   `${__dirname}/hotspot.js`,
   `${__dirname}/wifi.js`,
@@ -55,14 +57,13 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
     }
 
     var serviceFolder = __dirname.substring(0, __dirname.indexOf('/src')) + '/services';
-    var mainDir = __dirname.substring(0, __dirname.indexOf('/piFig/src'));
 
     if (!curCfg.serviceFolder) {
       curCfg.serviceFolder = serviceFolder;
-      curCfg.mainDir = mainDir;
+      curCfg.parcelRoot = parcelRoot;
     } else {
       serviceFolder = curCfg.serviceFolder;
-      mainDir = curCfg.mainDir;
+      parcelRoot = curCfg.parcelRoot;
     }
 
     monitor.begin();
@@ -78,7 +79,7 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
 
         var paths = {
           appData: appDataDir,
-          app: mainDir,
+          app: parcelRoot + '/app/',
           setup: setupDir,
         };
 
@@ -109,6 +110,18 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
         monitor.unmount(which);
       } else monitor.unmount(which);
     });
+
+    if (!fs.existsSync(parcelRoot + '/app') && pfg.appRepo && !configsMatch(curCfg.appRepo, pfg.appRepo)) {
+      console.log('installing application.');
+      if (fs.existsSync(parcelRoot + '/app')) execSync(`rm -rf ${parcelRoot + '/app'}`);
+      execSync(`git clone  --recurse-submodules ${pfg.appRepo} app`, { cwd: parcelRoot });
+      execSync(`npm install`, { cwd: parcelRoot + '/app' });
+
+      if (process.platform == 'linux') {
+        execSync(`ln -s ${window.setupDir} SetupFiles`, { cwd: os.homedir() });
+        execSync(`ln -s ${window.appDataDir} AppDataFiles`, { cwd: os.homedir() });
+      }
+    }
 
     if (pfg.wifiHotspot && !configsMatch(curCfg.wifiHotspot, pfg.wifiHotspot)) {
       console.log('Configuring wifi hotspot...');
@@ -145,7 +158,7 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
       if (pfg.autostart) services.configure(
         'electron',
         'Autostart main application',
-        `/usr/bin/startx ${mainDir}/node_modules/.bin/electron ${mainDir}`
+        `/usr/bin/startx ${parcelRoot}/node_modules/.bin/electron ${parcelRoot}`
       );
       else if (curCfg.autostart) services.disable('electron');
       curCfg.autostart = pfg.autostart;
@@ -156,7 +169,7 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
       if (pfg.autostartNode) services.configure(
         'node',
         'Autostart main application',
-        `/usr/bin/node ${mainDir}`
+        `/usr/bin/node ${parcelRoot}`
       );
       else if (curCfg.autostartNode) services.disable('node');
       curCfg.autostartNode = pfg.autostartNode;
@@ -181,7 +194,7 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
       if (pfg.gitWatch) services.configure(
         'gitTrack',
         'Autotrack git repo',
-        `/usr/bin/node ${serviceFolder}/gitCheck.js ${mainDir}`
+        `/usr/bin/node ${serviceFolder}/gitCheck.js ${parcelRoot}`
       );
       else services.disable('gitTrack');
 
@@ -193,7 +206,7 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
       if (pfg.autostart) services.configure(
         'piFig',
         'Monitor piFig file on startup',
-        `/usr/bin/node ${mainDir}/piFig/install.js`
+        `/usr/bin/node ${parcelRoot}/piFig/install.js`
       );
 
       curCfg.watchPiFig = true;
