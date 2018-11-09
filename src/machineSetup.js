@@ -14,6 +14,7 @@ window.parcelRoot = __dirname.substring(0, __dirname.indexOf('/piFig/src'));
 
 var obs = [
   `${__dirname}/hotspot.js`,
+  `${__dirname}/wiredRouter.js`,
   `${__dirname}/wifi.js`,
   `${__dirname}/staticIP.js`,
   `${__dirname}/preventSleep.js`,
@@ -26,7 +27,7 @@ var obs = [
   'child_process',
 ];
 
-obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, fs, { keyboards }, { monitor }, { exec, execSync })=> {
+obtain(obs, (hotspot, wiredRouter, wifi, staticIP, preventSleep, soft, { config }, services, fs, { keyboards }, { monitor }, { exec, execSync })=> {
   var pfg = config.piFig;
   if (pfg) {
     var confDir = window.setupDir + '/.currentConfig.json';
@@ -131,7 +132,7 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
 
     if (pfg.wiredRouter && !configsMatch(curCfg.wiredRouter, pfg.wiredRouter)) {
       console.log('Configuring wired router...');
-      hotspot.configure(pfg.wiredRouter);
+      wiredRouter.configure(pfg.wiredRouter);
       curCfg.wiredRouter = pfg.wiredRouter;
     }
 
