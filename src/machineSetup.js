@@ -130,7 +130,7 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
     }
 
     if (pfg.wiredRouter && !configsMatch(curCfg.wiredRouter, pfg.wiredRouter)) {
-      console.log('Configuring wifi hotspot...');
+      console.log('Configuring wired router...');
       hotspot.configure(pfg.wiredRouter);
       curCfg.wiredRouter = pfg.wiredRouter;
     }
