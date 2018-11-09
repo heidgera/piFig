@@ -129,6 +129,12 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
       curCfg.wifiHotspot = pfg.wifiHotspot;
     }
 
+    if (pfg.wiredRouter && !configsMatch(curCfg.wiredRouter, pfg.wiredRouter)) {
+      console.log('Configuring wifi hotspot...');
+      hotspot.configure(pfg.wiredRouter);
+      curCfg.wiredRouter = pfg.wiredRouter;
+    }
+
     if (pfg.wifi && !configsMatch(curCfg.wifi, pfg.wifi)) {
       console.log('Configuring wifi...');
       wifi.configure(pfg.wifi);
