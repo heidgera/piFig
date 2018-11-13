@@ -17,6 +17,7 @@ obtain(['fs', `${__dirname}/utils.js`, 'child_process'], (fs, { copyConfigFile }
 
   exports.configure = (cfgObj)=> {
     if (cfgObj.domainName) {
+      writeInterfaceFile();
       writeHostsFile(cfgObj.domainName);
       writeDhcpcdConfFile();
       writeDnsmasqConfFile(cfgObj.domainName);
