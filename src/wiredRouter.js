@@ -4,7 +4,7 @@ obtain(['fs', `${__dirname}/utils.js`, 'child_process'], (fs, { copyConfigFile }
   };
 
   var writeHostsFile = (domainName)=> {
-    copyConfigFile(`${__dirname}/../configFiles/hosts`, '/etc/hosts', { DOMAIN_NAME: domainName });
+    copyConfigFile(`${__dirname}/../configFiles/hosts_wired`, '/etc/hosts', { DOMAIN_NAME: domainName });
   };
 
   var writeDhcpcdConfFile = ()=> {
@@ -17,10 +17,9 @@ obtain(['fs', `${__dirname}/utils.js`, 'child_process'], (fs, { copyConfigFile }
 
   exports.configure = (cfgObj)=> {
     if (cfgObj.domainName) {
-      writeInterfaceFile();
       writeHostsFile(cfgObj.domainName);
       writeDhcpcdConfFile();
       writeDnsmasqConfFile(cfgObj.domainName);
-    } else console.error('Error: Password must be 8 or more characters');
+    } else console.error('Error: Must include domain name.');
   };
 });
